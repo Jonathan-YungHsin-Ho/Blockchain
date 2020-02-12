@@ -66,9 +66,8 @@ class Blockchain(object):
         # We must make sure that the Dictionary is Ordered,
         # or we'll have inconsistent hashes
 
-        string_object = json.dumps(block, sort_keys=True)
-
         # TODO: Create the block_string
+        string_object = json.dumps(block, sort_keys=True)
         block_string = string_object.encode()
 
         # TODO: Hash this string using sha256
@@ -87,20 +86,6 @@ class Blockchain(object):
     @property
     def last_block(self):
         return self.chain[-1]
-
-    # def proof_of_work(self):
-    #     """
-    #     Simple Proof of Work Algorithm
-    #     Stringify the block and look for a proof.
-    #     Loop through possibilities, checking each one against `valid_proof`
-    #     in an effort to find a number that is a valid proof
-    #     :return: A valid proof for the provided block
-    #     """
-    #     string_object = json.dumps(self.last_block, sort_keys=True)
-    #     proof = 0
-    #     while self.valid_proof(string_object, proof) is False:
-    #         proof += 1
-    #     return proof
 
     @staticmethod
     def valid_proof(block_string, proof):
@@ -134,9 +119,9 @@ blockchain = Blockchain()
 def mine():
     data = request.get_json()
     # print(data)
-    string_object = json.dumps(blockchain.last_block, sort_keys=True)
 
     if data.get('id') and data.get('proof'):
+        string_object = json.dumps(blockchain.last_block, sort_keys=True)
         if blockchain.valid_proof(string_object, data['proof']):
             previous_hash = blockchain.hash(blockchain.last_block)
             block = blockchain.new_block(data['proof'], previous_hash)
@@ -151,7 +136,7 @@ def mine():
 
             return jsonify(response), 200
         else:
-            response = {'message': 'Failure'}
+            response = {'message': 'Proof is invalid or already submitted'}
     else:
         response = {'message': 'Please submit both proof and id'}
 

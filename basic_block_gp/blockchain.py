@@ -63,9 +63,8 @@ class Blockchain(object):
         # We must make sure that the Dictionary is Ordered,
         # or we'll have inconsistent hashes
 
-        string_object = json.dumps(block, sort_keys=True)
-
         # TODO: Create the block_string
+        string_object = json.dumps(block, sort_keys=True)
         block_string = string_object.encode()
 
         # TODO: Hash this string using sha256
