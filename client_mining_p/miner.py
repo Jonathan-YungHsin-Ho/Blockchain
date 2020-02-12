@@ -4,6 +4,8 @@ import requests
 import sys
 import json
 
+import time
+
 
 def proof_of_work(block):
     """
@@ -15,10 +17,16 @@ def proof_of_work(block):
     """
     string_object = json.dumps(block, sort_keys=True)
     proof = 0
+    start_time = time.time()
     print('Mining started')
+
     while valid_proof(string_object, proof) is False:
         proof += 1
+
+    end_time = time.time()
     print('Mining finished')
+    print(f'Runtime: {end_time - start_time} seconds')
+
     return proof
 
 
@@ -60,7 +68,7 @@ if __name__ == '__main__':
         try:
             data = r.json()
         except ValueError:
-            print("Error:  Non-json response")
+            print("Error: Non-json response")
             print("Response returned:")
             print(r)
             break
@@ -81,6 +89,6 @@ if __name__ == '__main__':
         if data['message'] == 'New Block Forged':
             print(data['message'])
             coins += 1
-            print('Number of coins mined:', coins)
+            print(f'Number of coins mined: {coins}\n')
         else:
             print(data['message'])

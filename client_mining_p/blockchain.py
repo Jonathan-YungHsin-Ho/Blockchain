@@ -133,7 +133,7 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['POST'])
 def mine():
     data = request.get_json()
-    print(data)
+    # print(data)
     string_object = json.dumps(blockchain.last_block, sort_keys=True)
 
     if data.get('id') and data.get('proof'):
