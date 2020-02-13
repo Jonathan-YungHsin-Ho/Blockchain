@@ -7,6 +7,7 @@ from time import time
 from uuid import uuid4
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 
 class Blockchain(object):
@@ -117,11 +118,12 @@ class Blockchain(object):
         # return True or False
         guess = f'{block_string}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
-        return guess_hash[:1] == '0' * 1
+        return guess_hash[:5] == '0' * 5
 
 
 # Instantiate our Node
 app = Flask(__name__)
+cors = CORS(app)
 
 # Generate a globally unique address for this node
 node_identifier = str(uuid4()).replace('-', '')
@@ -191,6 +193,7 @@ def new_transaction():
     #   * upon success, return a 'message' indicating index of the block
     #     containing the transaction
     data = request.get_json()
+    print(data)
 
     required_properties = ['sender', 'recipient', 'amount']
 
